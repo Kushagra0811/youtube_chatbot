@@ -8,3 +8,4 @@ langchain-google-genai
 langchain-openai
 faiss-cpu
 huggingface_hub
+langchain-huggingface
