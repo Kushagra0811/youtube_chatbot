@@ -12,13 +12,11 @@ from langchain_core.runnables import (
     RunnableParallel,
     RunnableLambda,
     RunnablePassthrough,
-)   
+)
 
 from urllib.parse import urlparse, parse_qs
 import streamlit as st
 
-os.environ["GOOGLE_API_KEY"] = st.secrets['GOOGLE_API_KEY']
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = st.secrets['HUGGINGFACEHUB_API_TOKEN']
 
 def extract_video_id(url: str) -> str:
     """
@@ -35,7 +33,6 @@ def extract_video_id(url: str) -> str:
         return parsed_url.path.lstrip("/")
 
     return None
-    
 
 
 load_dotenv()
@@ -74,7 +71,7 @@ def run_chatbot(video_id, question):
     splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     chunks = splitter.create_documents([full_transcript])
 
-    embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2')
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
     vector_store = FAISS.from_documents(chunks, embeddings)
     retriever = vector_store.as_retriever(
